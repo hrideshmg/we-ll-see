@@ -1,0 +1,8 @@
+django
+django-environ
+djangorestframework
+psycopg2-binary        # for PostgreSQL, safe to keep even if unused
+gunicorn               # useful for deployment
+whitenoise              # static file handling in production
+python-dotenv
+ninja
