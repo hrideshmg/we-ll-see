@@ -10,8 +10,8 @@ BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 # wellsee_backend/
 APPS_DIR = BASE_DIR / "wellsee_backend"
 env = environ.Env()
-
-READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=False)
+# READ_DOT_ENV_FILE = env.bool("DJANGO_READ_DOT_ENV_FILE", default=True)
+READ_DOT_ENV_FILE= True
 if READ_DOT_ENV_FILE:
     # OS environment variables take precedence over variables from .env
     env.read_env(str(BASE_DIR / ".env"))
@@ -70,13 +70,21 @@ DJANGO_APPS = [
     # "django.contrib.humanize", # Handy template tags
     "django.contrib.admin",
     "django.forms",
+    "rest_framework",
 ]
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
+
 THIRD_PARTY_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "allauth",
     "allauth.account",
-    "allauth.mfa",
+    # "allauth.mfa",
     "allauth.socialaccount",
 ]
 
@@ -112,7 +120,7 @@ LOGIN_URL = "account_login"
 # https://docs.djangoproject.com/en/dev/ref/settings/#password-hashers
 PASSWORD_HASHERS = [
     # https://docs.djangoproject.com/en/dev/topics/auth/passwords/#using-argon2-with-django
-    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    # "django.contrib.auth.hashers.Argon2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2PasswordHasher",
     "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
     "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",

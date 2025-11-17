@@ -1,8 +1,20 @@
 django
 django-environ
 djangorestframework
+djangorestframework-simplejwt
 psycopg2-binary        # for PostgreSQL, safe to keep even if unused
 gunicorn               # useful for deployment
 whitenoise              # static file handling in production
 python-dotenv
 ninja
+django-crispy-forms
+crispy-bootstrap5
+django-allauth
+django-environ
+django-crispy-forms
+crispy-bootstrap5
+djangorestframework
+djangorestframework-simplejwt
+whitenoise
+django-debug-toolbar
+django-extensions
