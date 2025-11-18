@@ -12,4 +12,10 @@ class Interaction(models.Model):
     user = models.ForeignKey(
         User, related_name="interactions", on_delete=models.CASCADE
     )
-    interaction_type = models.CharField(choices=INTERACTION_CHOICES)
+    interaction_type = models.CharField(max_length=10, choices=INTERACTION_CHOICES)
+
+    class Meta:
+        unique_together = ("user", "post")
+
+    def __str__(self):
+        return f"{self.user.username} {self.interaction_type}s on post {self.post.id}"

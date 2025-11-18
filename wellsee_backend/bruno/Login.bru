@@ -7,7 +7,7 @@ meta {
 post {
   url: http://127.0.0.1:8000/users/auth/login/
   body: json
-  auth: inherit
+  auth: none
 }
 
 body:json {
@@ -15,6 +15,10 @@ body:json {
     "username":"hrideshmg",
     "password":"robot123"
   }
+}
+
+script:post-response {
+  bru.setVar('auth-token', res.body.access);
 }
 
 settings {

@@ -20,6 +20,8 @@ urlpatterns = [
     path("accounts/", include("allauth.urls")),
     # Posts API
     path('api/posts/', include('wellsee_backend.posts.urls')),
+    # Interactions API
+    path('api/interactions/', include('wellsee_backend.interactions.urls')),
     # Your stuff: custom urls includes go here
     # ...
     # Media files

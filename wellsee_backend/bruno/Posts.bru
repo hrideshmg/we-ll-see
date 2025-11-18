@@ -5,9 +5,15 @@ meta {
 }
 
 post {
-  url: 
-  body: none
+  url: http://127.0.0.1:8000/api/posts/
+  body: multipartForm
   auth: inherit
+}
+
+body:multipart-form {
+  content: test
+  deadline: 2025-10-10
+  image: @file(/home/hridesh/Pictures/20250711_22h10m32s_grim.png)
 }
 
 settings {

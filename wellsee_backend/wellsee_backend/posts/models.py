@@ -15,6 +15,8 @@ class Post(models.Model):
     image = models.ImageField(upload_to="posts/")
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default="wellsee")
     proof_media = models.ImageField(upload_to="proofs/", null=True, blank=True)
+    believes = models.PositiveIntegerField(default=0)
+    doubts = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"Post by {self.user.username}"

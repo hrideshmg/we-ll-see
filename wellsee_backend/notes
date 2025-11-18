@@ -1,0 +1,123 @@
+
+1. Users App (existing)
+
+ • Purpose: Authentication and basic user management
+ • Features:
+    • Email/Google/GitHub auth (using AllAuth)
+    • Profile management (karma scores, achievements)
+    • Private user data storage
+ • Models to add:
+
+   class UserProfile(models.Model):
+       user = OneToOneField(User)
+       karma = IntegerField(default=0)
+       streak_count = IntegerField(default=0)
+
+
+2. Posts App (new)
+
+ • Core feature: Future plan management
+ • Features:
+    • Create/edit posts with deadlines
+    • Status tracking (pending/completed/failed)
+    • Proof submission system
+ • Key models:
+
+   class PlanPost(models.Model):
+       user = ForeignKey(User)
+       content = TextField()
+       deadline = DateTimeField()
+       status = CharField(choices=STATUS_CHOICES, default='pending')
+       proof_media = ImageField(null=True, blank=True)
+
+
+3. Interactions App (new)
+
+ • Purpose: Engagement system
+ • Features:
+    • Believe/Doubt functionality
+    • Motivation system (comments/cheers)
+    • Behavioral tracking
+ • Key models:
+
+   class Interaction(models.Model):
+       INTERACTION_CHOICES = [('BELIEVE', 'Believe'), ('DOUBT', 'Doubt')]
+       user = ForeignKey(User)
+       post = ForeignKey(PlanPost)
+       interaction_type = CharField(choices=INTERACTION_CHOICES)
+       motivation_text = TextField(blank=True)
+
+
+4. Gamification App (new)
+
+ • Purpose: Drive engagement metrics
+ • Features:
+    • Karma point calculations
+    • Achievement badges
+    • Leaderboard logic
+ • Key components:
+
+   class KarmaTransaction(models.Model):
+       user = ForeignKey(User)
+       points = IntegerField()
+       source = ForeignKey(...)  # Link to post/interaction
+
+
+5. Notifications App (new)
+
+ • Purpose: Reminder system
+ • Features:
+    • Deadline reminders (email/push)
+    • Interaction alerts
+    • Karma milestone notifications
+ • Integration: Use Celery for scheduled reminders
+
+6. Teams App (new)
+
+ • Purpose: Group accountability
+ • Features:
+    • Team creation
+    • Group challenges
+    • Collaborative karma tracking
+ • Key models:
+
+   class Team(models.Model):
+       members = ManyToManyField(User)
+       challenges = ForeignKey(Challenge, ...)
+
+   class Challenge(models.Model):
+       name = CharField()
+       deadline = DateTimeField()
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+Integration Notes:
+
+ 1 Signals: Use Django signals to trigger:
+    • Karma calculations when posts are confirmed
+    • Notifications when deadlines approach
+    • Leaderboard updates after interactions
+ 2 API Structure:
+
+   # Example endpoint for post interaction
+   path('api/posts/<int:pk>/react/', PostReactView.as_view())
+
+ 3 Dependencies:
+
+   # INSTALLED_APPS
+   'allauth',              # Existing
+   'allauth.socialaccount', # Existing
+   'celery',               # New (for reminders)
+
+ 4 Key Relationships:
+
+   User -> PlanPost (1:M)
+   PlanPost -> Interaction (1:M)
+   Interaction -> KarmaTransaction (1:1)
+   Team -> Users (M:M)
+   Team -> Challenge (1:M)
+
+
+This structure prevents fat models, isolates business logic, and maintains RESTful endpoints. Each app can be developed/tested independently before
+integration.
+
