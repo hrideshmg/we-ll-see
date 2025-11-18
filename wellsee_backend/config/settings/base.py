@@ -93,6 +93,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 LOCAL_APPS = [
     "wellsee_backend.users",
+    "wellsee_backend.posts",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
