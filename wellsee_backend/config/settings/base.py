@@ -87,6 +87,12 @@ THIRD_PARTY_APPS = [
     # "allauth.mfa",
     "allauth.socialaccount",
 ]
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_HEADERS = [
+        "authorization",
+        "content-type"
+        ]
+CORS_ALLOW_CREDENTIALS = False
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
