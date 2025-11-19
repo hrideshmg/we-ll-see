@@ -20,3 +20,4 @@ django-debug-toolbar
 django-extensions
 django-cors-headers
 pillow
+drf-spectacular

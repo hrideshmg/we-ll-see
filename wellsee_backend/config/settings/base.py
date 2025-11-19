@@ -76,7 +76,8 @@ DJANGO_APPS = [
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
-    )
+    ),
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 THIRD_PARTY_APPS = [
@@ -86,6 +87,7 @@ THIRD_PARTY_APPS = [
     "allauth.account",
     # "allauth.mfa",
     "allauth.socialaccount",
+    "drf_spectacular",
 ]
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_HEADERS = [
@@ -303,3 +305,9 @@ SOCIALACCOUNT_FORMS = {"signup": "wellsee_backend.users.forms.UserSocialSignupFo
 
 # Your stuff...
 # ------------------------------------------------------------------------------
+SPECTACULAR_SETTINGS = {
+    "TITLE": "wellsee backend API",
+    "DESCRIPTION": "API for wellsee backend",
+    "VERSION": "0.1.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+}
