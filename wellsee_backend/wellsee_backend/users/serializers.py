@@ -61,3 +61,10 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         if User.objects.exclude(pk=user.pk).filter(email=value).exists():
             raise serializers.ValidationError("This email is already in use.")
         return value
+class LeaderboardUserSerializer(serializers.ModelSerializer):
+    plansCompleted = serializers.IntegerField(read_only=True)
+    rank = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ["id", "username", "karma", "plansCompleted", "rank"]

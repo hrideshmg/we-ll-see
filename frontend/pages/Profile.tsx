@@ -1,0 +1,1 @@
+// Deprecated. Moved to app/profile/page.tsx

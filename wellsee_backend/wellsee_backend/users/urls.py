@@ -6,7 +6,8 @@ from .views import (
     RegisterView,
     LoginView,
     ProfileView,
-    PublicProfileView
+    PublicProfileView,
+    KarmaLeaderboardView
 )
 
 app_name = "users"
@@ -16,6 +17,7 @@ urlpatterns = [
     path("auth/login/", LoginView.as_view(), name="auth-login"),
     path("auth/me/", ProfileView.as_view(), name="auth-me"),
 
+    path("leaderboard/", KarmaLeaderboardView.as_view(), name="karma-leaderboard"),
 
     path("~redirect/", user_redirect_view, name="redirect"),
     path("~update/", user_update_view, name="update"),

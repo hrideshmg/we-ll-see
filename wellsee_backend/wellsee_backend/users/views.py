@@ -1,6 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Count, Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView
@@ -9,10 +9,10 @@ from django.views.generic import UpdateView
 from wellsee_backend.users.models import User
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework_simplejwt.tokens import RefreshToken
-from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, UpdateProfileSerializer
+from .serializers import RegisterSerializer, LoginSerializer, UserSerializer, UpdateProfileSerializer, LeaderboardUserSerializer
 
 class RegisterView(APIView):
     def post(self, request):
@@ -90,3 +90,27 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
         return reverse("users:detail", kwargs={"username": self.request.user.username})
 
 user_redirect_view = UserRedirectView.as_view()
+
+from django.db.models import Count, Q
+
+class KarmaLeaderboardView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        users = (
+            User.objects
+            .annotate(
+                plansCompleted=Count("posts", filter=Q(posts__status="completed"))
+            )
+            .order_by("-karma")[:50]
+        )
+
+        data = LeaderboardUserSerializer(users, many=True).data
+
+        # Add rank
+        for i, item in enumerate(data, start=1):
+            item["rank"] = i
+
+        return Response(data)
+
+
