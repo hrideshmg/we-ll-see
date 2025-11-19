@@ -72,5 +72,9 @@ export const users = {
   get: async (username: string): Promise<User> => {
     const response = await api.get(`/users/${username}/`);
     return response.data;
-  }
+  },
+  update: async (data: Partial<User>): Promise<User> => {
+    const response = await api.patch(`/users/~update/`, data);
+    return response.data;
+  },
 };

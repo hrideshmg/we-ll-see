@@ -1,1 +1,0 @@
-// Deprecated. Moved to app/layout.tsx

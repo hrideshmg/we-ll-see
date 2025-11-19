@@ -17,6 +17,7 @@ export default function Page() {
   const { username } = useParams();
   const [profileUser, setProfileUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  const [showEdit, setShowEdit] = useState(false);
 
   useEffect(() => {
     if (username) {
@@ -36,6 +37,25 @@ export default function Page() {
       <div className="text-center py-20 text-gray-500">Loading profile...</div>
     );
   }
+
+  const handleSave = async () => {
+    try {
+      const updated = await users.update({
+        name: profileUser.name,
+        username: profileUser.username,
+        email: profileUser.email,
+      });
+
+      setProfileUser(updated);
+      setShowEdit(false);
+    } catch (error: any) {
+      alert(
+        error.response?.data?.username ||
+          error.response?.data?.email ||
+          "Failed to update"
+      );
+    }
+  };
 
   const myPlans = posts.filter((p) => p.user === profileUser.id);
   const completed = myPlans.filter((p) => p.status === "completed").length;
@@ -92,6 +112,18 @@ export default function Page() {
           </div>
         </div>
       </div>
+
+      {/* Edit Button */}
+      {currentUser?.id === profileUser.id && (
+        <div className="mt-10 flex justify-end">
+          <button
+            onClick={() => setShowEdit(true)}
+            className="block text-left py-4 px-4 text-xl font-bold text-neon-purple border border-zinc-800 rounded-2xl bg-zinc-900/40 hover:bg-zinc-900/70 transition"
+          >
+            Edit Profile
+          </button>
+        </div>
+      )}
 
       {/* Stats & Heatmap */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -166,6 +198,61 @@ export default function Page() {
           Sign Out
         </button>
       </div>
+
+      {/* Edit Modal */}
+      {showEdit && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+          <div className="bg-zinc-900 border border-zinc-700 p-6 rounded-2xl w-full max-w-sm space-y-4">
+            <h2 className="text-xl font-black text-white">Edit Profile</h2>
+
+            <input
+              type="text"
+              defaultValue={profileUser.name}
+              onChange={(e) =>
+                setProfileUser({ ...profileUser, name: e.target.value })
+              }
+              placeholder="Name"
+              className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-xl text-white"
+            />
+
+            <input
+              type="text"
+              defaultValue={profileUser.username}
+              onChange={(e) =>
+                setProfileUser({ ...profileUser, username: e.target.value })
+              }
+              placeholder="Username"
+              className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-xl text-white"
+            />
+
+            <input
+              type="email"
+              defaultValue={profileUser.email}
+              onChange={(e) =>
+                setProfileUser({ ...profileUser, email: e.target.value })
+              }
+              placeholder="Email"
+              className="w-full px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-xl text-white"
+            />
+
+            <div className="flex justify-end gap-2">
+              <button
+                onClick={() => setShowEdit(false)}
+                className="px-4 py-2 text-sm border border-zinc-700 rounded-xl text-gray-300"
+              >
+                Cancel
+              </button>
+
+              <button
+                onClick={handleSave}
+                className="px-4 py-2 text-sm font-bold bg-neon-green text-black rounded-xl"
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
