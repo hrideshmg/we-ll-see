@@ -2,7 +2,7 @@ import { GoogleGenAI } from "@google/genai";
 
 // Initialize the client.
 // The API key is expected to be in process.env.API_KEY
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY || '' });
+const ai = new GoogleGenAI({ apiKey: "AIzaSyBGVaeTDmTwOXq8WJrtmWq0xe4Uo3PPMGU" || '' });
 
 /**
  * Generates a "Hater" comment or a "Motivator" comment based on the plan.

@@ -36,14 +36,18 @@ class PostDetailView(APIView):
 
     def patch(self, request, pk):
         post = self.get_object(pk)
-        if post.user != request.user:
-            return Response(
-                {"detail": "You do not have permission to perform this action."},
-                status=status.HTTP_403_FORBIDDEN,
-            )
+
+        if "status" in request.data and request.data["status"] == "completed":
+            if request.user.username != "admin":
+                return Response(
+                    {"detail": "You are not allowed to mark this as PROVEN."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
 
         serializer = PostSerializer(post, data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+

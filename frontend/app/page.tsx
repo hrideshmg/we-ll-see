@@ -57,7 +57,7 @@ export default function Page() {
       <div className="space-y-8 min-h-[50vh]">
         {filteredPlans.length > 0 ? (
             filteredPlans.map((plan) => (
-                <PostCard key={plan.id} plan={plan} isCurrentUser={plan.user === user?.id} />
+                <PostCard key={plan.id} plan={plan} isCurrentUser={plan.user === user?.id} user={user} />
             ))
         ) : (
             <div className="text-center py-24 border-2 border-dashed border-zinc-800 rounded-3xl bg-zinc-900/20 flex flex-col items-center justify-center">
